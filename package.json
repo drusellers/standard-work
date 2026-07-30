@@ -1,0 +1,24 @@
+{
+  "name": "@drusellers/standard-work",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dru's lazy-loaded standard work for coding agents as an Agent Skills / Pi package.",
+  "keywords": [
+    "pi-package",
+    "agent-skills",
+    "standard-work",
+    "engineering-standards",
+    "coding-standards"
+  ],
+  "files": [
+    "AGENTS.md",
+    "README.md",
+    "skills"
+  ],
+  "license": "UNLICENSED",
+  "pi": {
+    "skills": [
+      "./skills"
+    ]
+  }
+}
