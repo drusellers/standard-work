@@ -36,7 +36,7 @@ When a new doc does not clearly fit one of these prefixes, prefer extending an e
 ### Code style and API design
 
 - TypeScript style conventions: `references/codeStyle.typescript.md`
-- Cross-language design principles, defaults, and variant states: `references/codeStyle.designPrinciples.md`
+- Cross-language design principles, defaults, variant states, and transport client contract links: `references/codeStyle.designPrinciples.md`
 - CLI command usage examples: `references/cli.usage.md`
 
 ### Runtime behavior
@@ -110,6 +110,9 @@ When a new doc does not clearly fit one of these prefixes, prefer extending an e
 - Writing or refactoring TypeScript style:
   - `references/codeStyle.typescript.md`
   - `references/codeStyle.designPrinciples.md`
+- Writing or refactoring transport client libraries:
+  - `references/codeStyle.designPrinciples.md`
+  - `references/organization.interfaces.http.md`
 - Adding or updating tests:
   - `references/runtime.testing.md`
   - `references/packages.tanstackStart.md`

@@ -8,6 +8,7 @@ This document defines cross-language design principles for API ergonomics, safer
 - [Prefer Discriminated Unions For Variant States](#prefer-discriminated-unions-for-variant-states)
 - [Push Null and Undefined Handling To Boundaries](#push-null-and-undefined-handling-to-boundaries)
 - [Compose Dependencies Through Factories and Injection](#compose-dependencies-through-factories-and-injection)
+- [Link Transport Clients To API Contracts](#link-transport-clients-to-api-contracts)
 - [Follow the Hollywood Principle](#follow-the-hollywood-principle)
 - [Extract Cohesive Parts From Large Modules](#extract-cohesive-parts-from-large-modules)
 - [Practical Defaults](#practical-defaults)
@@ -68,6 +69,24 @@ config/env -> factories/composition root -> top-level app context -> services/us
 ```
 
 The top-level context object should hold the assembled collaborators needed by boundaries and domain workflows.
+
+## Link Transport Clients To API Contracts
+
+- When writing internal client libraries for HTTP, queues, RPC, webhooks, or any other transport boundary, link the relevant contract documentation in public class, interface, or method comments whenever possible.
+- Put the link at the smallest useful API surface: method comments for one endpoint/action; class or interface comments when all members implement the same service/contract.
+- Prefer canonical contract docs: OpenAPI/Swagger pages, service docs, RFCs/ADRs, protobuf/schema docs, webhook specs, queue message contracts, or equivalent.
+- Keep comments short; link to contract details rather than duplicating request/response fields.
+- If no stable contract doc exists, include the route/message/operation name and consider creating or filing one.
+
+Example:
+
+```csharp
+/// <summary>
+/// Gets a workout by id using GET /workouts/{workoutId}.
+/// API contract: <see href="https://docs.example.com/api/workouts#get-workout">GET /workouts/{workoutId}</see>.
+/// </summary>
+Task<WorkoutDto> GetWorkoutAsync(string workoutId, CancellationToken cancellationToken = default);
+```
 
 ## Follow the Hollywood Principle
 
@@ -171,6 +190,8 @@ This keeps parent modules smaller, improves testability, and makes ownership bou
 - Are dependencies injected instead of being created ad hoc inside business logic?
 - Are complex dependencies created through factories or explicit composition wiring?
 - Is dependency wiring centralized in a top-level context/composition root?
+- Do transport client APIs link to their canonical endpoint/message/schema contract docs when possible?
+- Is the link placed at method level for endpoint-specific calls and class/interface level for shared contracts?
 - Does the API expose intent-level operations instead of requiring state inspection + follow-up calls?
 - Is decision logic kept inside the owning module when possible?
 - Is this module large because it contains multiple responsibilities that can be extracted?
