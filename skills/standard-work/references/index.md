@@ -41,12 +41,14 @@ When a new doc does not clearly fit one of these prefixes, prefer extending an e
 
 ### Runtime behavior
 
+- Time concepts, time zones, calendar arithmetic, storage, and language gotchas: `references/runtime.time.md`
+
 - Runtime logging conventions and middleware shape: `references/runtime.logging.md`
 - Runtime configuration with Cloudflare env and Zod: `references/runtime.config.md`
 - Runtime dependency injection and context composition: `references/runtime.dependencyInjection.md`
 - Runtime AI patterns, prompts, caching, JSON output: `references/runtime.ai.md`
 - Runtime streaming and SSE patterns: `references/runtime.streaming.md`
-- Runtime testing conventions with Vitest and test types: `references/runtime.testing.md`
+- Runtime testing conventions, deterministic time, .NET TimeProvider, and Vitest: `references/runtime.testing.md`
 
 ### Data and auth
 
@@ -113,6 +115,9 @@ When a new doc does not clearly fit one of these prefixes, prefer extending an e
 - Writing or refactoring transport client libraries:
   - `references/codeStyle.designPrinciples.md`
   - `references/organization.interfaces.http.md`
+- Modeling dates, timestamps, schedules, or time-dependent behavior:
+  - `references/runtime.time.md`
+  - `references/runtime.testing.md`
 - Adding or updating tests:
   - `references/runtime.testing.md`
   - `references/packages.tanstackStart.md`

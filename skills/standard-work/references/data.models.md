@@ -19,6 +19,8 @@ This document is the index and shared conventions for domain/data models.
 
 ## Model Primitives
 
+For dates, instants, local date-times, durations, and zone-aware scheduling, see [Time: Model the Meaning First](runtime.time.md). Choose the temporal concept before choosing its storage representation.
+
 ### Duration
 
 - Domain shape: `{ value: number, unit: 'sec' | 'min' | 'hr' }`.

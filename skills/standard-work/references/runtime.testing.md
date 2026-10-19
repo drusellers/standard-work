@@ -47,6 +47,50 @@ Current example:
 
 - `apps/app/src/server/ai/workoutGeneration.integration.test.ts`
 
+## Time and Deterministic Tests
+
+Treat time as a dependency whenever behavior depends on “now,” elapsed time, delays, or timers. For the underlying domain concepts and pitfalls, see [Time: Model the Meaning First](runtime.time.md).
+
+- Inject a clock/time provider or pass an explicit timestamp into pure logic instead of reading the system clock throughout business code.
+- Capture “now” once per operation when multiple decisions must use the same instant.
+- Use UTC instants for storage and comparisons. Make the time zone explicit for calendar rules; cover daylight-saving transitions when relevant.
+- Use a monotonic time source for elapsed durations rather than subtracting wall-clock timestamps, which can jump.
+- In tests, freeze time for fixed-instant assertions and advance fake time for expiration, retries, scheduling, and timeout behavior. Avoid real sleeps.
+- Test just before, exactly at, and just after important boundaries. Define whether the boundary is inclusive.
+- Control both the clock and the timer/scheduler when testing delayed work; changing “now” alone does not necessarily trigger timers. Await asynchronous work before asserting.
+
+### .NET: TimeProvider
+
+- Prefer the built-in `TimeProvider` (.NET 8+) over a custom clock abstraction. Inject it and use `TimeProvider.System` in production.
+- Read UTC time with `GetUtcNow()`. For elapsed time, use `GetTimestamp()` and `GetElapsedTime()`.
+- Route delays and timers through provider-aware APIs, such as `Task.Delay(delay, timeProvider, cancellationToken)` and `timeProvider.CreateTimer(...)`, instead of bypassing the injected provider.
+- In tests, use `FakeTimeProvider` from the `Microsoft.Extensions.TimeProvider.Testing` package (`Microsoft.Extensions.Time.Testing` namespace). Initialize it to a known instant and call `Advance(...)` to move time forward without waiting.
+- Give each test its own provider. Do not change the machine clock or rely on global clock overrides.
+
+```csharp
+using Microsoft.Extensions.Time.Testing;
+
+public sealed class Expiration(TimeProvider timeProvider)
+{
+    public bool IsExpired(DateTimeOffset expiresAt) =>
+        timeProvider.GetUtcNow() >= expiresAt;
+}
+
+// In a test:
+var time = new FakeTimeProvider(
+    new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero));
+var expiration = new Expiration(time);
+var expiresAt = time.GetUtcNow().AddMinutes(5);
+
+Assert.False(expiration.IsExpired(expiresAt));
+time.Advance(TimeSpan.FromMinutes(5));
+Assert.True(expiration.IsExpired(expiresAt));
+```
+
+### TypeScript: Vitest
+
+Use `vi.useFakeTimers()` and `vi.setSystemTime(...)` for code that reads the global clock. Advance scheduled work with `await vi.advanceTimersByTimeAsync(...)` when appropriate, and restore real timers with `vi.useRealTimers()` in cleanup. Prefer an injected clock for business logic when global timer replacement would affect unrelated code.
+
 ## Running Tests
 
 From repository root:
