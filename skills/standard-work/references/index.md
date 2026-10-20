@@ -73,6 +73,7 @@ When a new doc does not clearly fit one of these prefixes, prefer extending an e
 
 - Shared UI/tokens/component rules: `references/design-system.md`
 - UI design principles for layout and composition: `references/design.principles.md`
+- HTML components and form autocomplete (admin vs. customer-facing): `references/ui.htmlComponents.md`
 - Marketing direction and typography: `references/marketing.md`
 - SEO metadata and canonical conventions: `references/marketing.seo.md`
 
@@ -96,6 +97,7 @@ When a new doc does not clearly fit one of these prefixes, prefer extending an e
   - `references/auth.clerk.md`
   - `references/data.multiTenancy.md`
 - Updating UI, tokens, or page presentation:
+  - `references/ui.htmlComponents.md`
   - `references/design-system.md`
   - `references/design.principles.md`
   - `references/marketing.md`
